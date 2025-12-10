@@ -36,8 +36,8 @@ body::before {
   background-position: center;
   background-repeat: no-repeat;
   opacity: 0.1;
-  z-index: -1; 
-  pointer-events: none; 
+  z-index: -1;
+  pointer-events: none;
 }
 
 body.darkmode::before {
@@ -279,12 +279,12 @@ a {
 }
 
 .mid {
- display: flex;
+  display: flex;
   align-items: center;
-  justify-content: space-between; 
+  justify-content: space-between;
   max-width: 1400px;
   margin: auto;
-  gap: 40px; 
+  gap: 40px;
   padding: 40px 20px;
 }
 
@@ -311,7 +311,6 @@ a {
   border-radius: 20px;
   transition: transform 0.3s ease;
 }
-
 
 .upper_text {
   font-size: 20px;
@@ -480,4 +479,82 @@ a {
 .darkmode .menu-card:hover {
   box-shadow: 0 8px 25px rgba(255, 126, 95, 0.2);
 }
+
+
+/* Modal for available */
+.table-modal {
+    display: none;                    /* Hidden by default */
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(8px);
+    z-index: 9999;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    overflow-y: auto;
+}
+
+.table-modal.open,
+.table-modal[style*="block"] {
+    display: flex !important;   
+}
+
+.modal-content {
+    background: var(--base-color);
+    padding: 30px;
+    border-radius: 20px;
+    max-width: 600px;
+    width: 90%;
+    text-align: center;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+}
+
+.table-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr); /* 4 columns */
+    gap: 15px;
+    margin: 20px 0;
+}
+
+.table-seat {
+    background: #ccc; /* Default gray */
+    padding: 20px;
+    border-radius: 10px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: 0.3s;
+}
+
+.table-seat.available {
+    background: #4caf50; /* Green */
+    color: white;
+}
+
+.table-seat.occupied {
+    background: #f44336; /* Red */
+    color: white;
+    cursor: not-allowed;
+}
+
+.table-seat.selected {
+    background: #ff7e5f; /* Orange */
+    border: 3px solid #fff;
+    transform: scale(1.1);
+}
+
+.modal-actions {
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+}
+
+.cancel-btn {
+    background: #eee;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 10px;
+    cursor: pointer;
+}
+
 
