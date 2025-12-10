@@ -63,35 +63,6 @@
     <button class="tab" data-category="desserts">Desserts</button>
     <button class="tab" data-category="main-dish">Main dish</button>
 </div>
-
- <div class="items-grid" id="itemsGrid"></div>
-
- <div class="items-grid">
-            <div class="item-card" data-category="appetizer">
-            <img src="dashboardMenu/classic-beef-burger.jpg">
-            <div class="item-info">
-            <h3>Classic Beef Burger</h3>
-        <p class="price">₱299</p>
-        </div>
-        <button class="add-btn">+</button>
-</div>
-
- <div class="item-card" data-category="drinks">
-        <img src="dashboardMenu/iced-coffee.jpg" alt="iced Coffee">
-        <div class="item-info">
-            <h3>Iced Coffee</h3>
-            <p class="price">₱120</p>
-        </div>
-        <button class="add-btn">+</button>
- </div>
-<div class="item-card" data-category="desserts">
-        <img src="dashboardMenu/chocolate-cake.jpg" alt="Chocolate Cake">
-        <div class="item-info">
-            <h3>Chocolate Cake</h3>
-            <p class="price">₱150</p>
-        </div>
-        <button class="add-btn">+</button>
-</div>
 </main>
 
 <main> 
@@ -124,7 +95,22 @@
             Proceed to Checkout →
         </button>
     </div>
-</div>    
+</div>
+
+<div class="table-modal" id="tableModal">
+    <div class="modal-content">
+        <h2>Choose Your Table</h2>
+        <p>Select an available table (green) for your order.</p>
+        <div class="table-grid" id="tableGrid">
+            <!-- JS will add tables here -->
+        </div>
+        <div class="modal-actions">
+            <button class="cancel-btn" onclick="closeTableModal()">Cancel</button>
+            <button class="confirm-btn" id="confirmTableBtn" disabled>Confirm Table & Order</button>
+        </div>
+        <small>Tables refresh in real-time – some may be taken!</small>
+    </div>
+</div>
 </main>
 
 </body>
