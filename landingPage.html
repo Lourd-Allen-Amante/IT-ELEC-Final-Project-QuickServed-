@@ -19,9 +19,9 @@
         <div class="container">
           <nav class="nav">
             <ul class ="nav-links"> 
-                <li class = "nav-link"> 
-                
-                </li>
+               <li class="nav-link">
+        <a id="availableSeatsLink" href="#">Available Seats</a>
+        </li>
             <li class = "nav-link services"> 
                 <a href ="#">Services
                 <span class = "material-icons dropdown-icon">
@@ -86,6 +86,7 @@
     <button class="tab" data-category="main-dish">Main dish</button>
 </div>
       </div>
+      
   <section class="featured-menu">
   <div class="menu-cards">
     <div class="menu-card">
@@ -116,6 +117,21 @@
     </div>
   </div>
 </section>
+
+
+<div class="table-modal" id="availableSeatsModal">
+    <div class="modal-content">
+        <h2>Available Seats</h2>
+        <p>Select an available table (green).</p>
+        <div class="table-grid" id="tableGrid">
+            <!-- JS will add tables here -->
+        </div>
+        <div class="modal-actions">
+            <button class="cancel-btn" onclick="closeAvailableSeatsModal()">Close</button>
+        </div>
+        <small>Tables refresh in real-time – some may be taken!</small>
+    </div>
+</div>
       </main>
       </div>
   </body>
