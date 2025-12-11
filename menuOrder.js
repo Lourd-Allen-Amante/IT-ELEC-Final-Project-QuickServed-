@@ -1,8 +1,9 @@
-// menuOrder.js - FULL & FINAL VERSION (2025)
+// menuOrder.js - UPDATED WITH ORDER SUMMARY
 
 let cart = [];
-let selectedTable = null;        // For checkout
-let selectedSeat = null;         // For "Available Seats" on landing page
+let selectedTable = null;
+let selectedSeat = null;
+const SERVICE_FEE = 50;
 
 /* ===================== CART FUNCTIONS ===================== */
 
@@ -81,7 +82,7 @@ function updateCart() {
         list.appendChild(div);
     });
 
-    const total = subtotal; // You can add delivery fee later
+    const total = subtotal;
     if (count) count.textContent = totalItems;
     if (badge) badge.textContent = totalItems;
     if (subtotalEl) subtotalEl.textContent = `₱${subtotal}`;
@@ -104,7 +105,7 @@ document.querySelectorAll(".checkout-btn").forEach(btn => {
             alert("Your cart is empty! Add some items first.");
             return;
         }
-        openTableModal(); // Same as "Proceed to Checkout"
+        openTableModal();
     });
 });
 
@@ -135,6 +136,7 @@ function openTableModal() {
     }
 
     modal.classList.add("open");
+    
 }
 
 function closeTableModal() {
@@ -150,14 +152,122 @@ function selectTable(seat) {
     if (confirmBtn) confirmBtn.disabled = false;
 }
 
+// Updated: Show order summary instead of directly placing order
 document.getElementById("confirmTableBtn")?.addEventListener("click", () => {
     if (selectedTable) {
-        alert(`Order placed successfully!\nYour table: Table ${selectedTable}\nEnjoy your meal!`);
         closeTableModal();
-        cart = [];
-        updateCart();
+        showOrderSummary();
     }
 });
+
+/* ===================== ORDER SUMMARY MODAL ===================== */
+
+function showOrderSummary() {
+    const modal = document.getElementById("orderSummaryModal");
+    const itemsList = document.getElementById("orderItemsList");
+    const tableDisplay = document.getElementById("selectedTableDisplay");
+    const subtotalEl = document.getElementById("summarySubtotal");
+    const grandTotalEl = document.getElementById("summaryGrandTotal");
+    const prepTimeEl = document.getElementById("prepTimeDisplay");
+    const mainContent = document.getElementById("summaryMainContent");
+    const successContent = document.getElementById("summarySuccessContent");
+
+    if (!modal || !itemsList) return;
+
+    // Show main content, hide success screen
+    if (mainContent) mainContent.style.display = "block";
+    if (successContent) successContent.style.display = "none";
+
+    // Update table number
+    if (tableDisplay) tableDisplay.textContent = `Table ${selectedTable}`;
+
+    // Calculate totals and prep time
+    let subtotal = 0;
+    let totalItems = 0;
+    itemsList.innerHTML = "";
+
+    cart.forEach(item => {
+        subtotal += item.price * item.qty;
+        totalItems += item.qty;
+
+        const div = document.createElement("div");
+        div.className = "summary-item";
+        div.innerHTML = `
+            <div class="item-details">
+                <div class="item-name">${item.name}</div>
+                <div class="item-quantity">Qty: ${item.qty} × ₱${item.price}</div>
+            </div>
+            <div class="item-price">₱${item.price * item.qty}</div>
+        `;
+        itemsList.appendChild(div);
+    });
+
+    // Calculate estimated prep time based on number of items
+    let prepTimeMin, prepTimeMax;
+    if (totalItems <= 3) {
+        prepTimeMin = 10;
+        prepTimeMax = 15;
+    } else if (totalItems <= 6) {
+        prepTimeMin = 15;
+        prepTimeMax = 20;
+    } else if (totalItems <= 10) {
+        prepTimeMin = 20;
+        prepTimeMax = 25;
+    } else {
+        prepTimeMin = 25;
+        prepTimeMax = 30;
+    }
+
+    if (prepTimeEl) {
+        prepTimeEl.textContent = `${prepTimeMin}-${prepTimeMax} minutes`;
+    }
+
+    const grandTotal = subtotal + SERVICE_FEE;
+
+    if (subtotalEl) subtotalEl.textContent = `₱${subtotal}`;
+    if (grandTotalEl) grandTotalEl.textContent = `₱${grandTotal}`;
+
+    modal.classList.add("open");
+}
+
+function closeOrderSummary() {
+    const modal = document.getElementById("orderSummaryModal");
+    if (modal) modal.classList.remove("open");
+    
+    // Reset to main content view
+    const mainContent = document.getElementById("summaryMainContent");
+    const successContent = document.getElementById("summarySuccessContent");
+    if (mainContent) mainContent.style.display = "block";
+    if (successContent) successContent.style.display = "none";
+}
+
+function goBackToTableSelection() {
+    closeOrderSummary();
+    openTableModal();
+}
+
+function confirmOrder() {
+    // Generate random order number
+    const orderNumber = Math.floor(10000 + Math.random() * 90000);
+    
+    // Show success screen
+    const mainContent = document.getElementById("summaryMainContent");
+    const successContent = document.getElementById("summarySuccessContent");
+    const orderNumberDisplay = document.getElementById("orderNumberDisplay");
+    const confirmTableDisplay = document.getElementById("confirmTableDisplay");
+
+    if (mainContent) mainContent.style.display = "none";
+    if (successContent) successContent.style.display = "block";
+    if (orderNumberDisplay) orderNumberDisplay.textContent = `Order #${orderNumber}`;
+    if (confirmTableDisplay) confirmTableDisplay.textContent = `Table ${selectedTable}`;
+
+    // Clear cart after short delay
+    setTimeout(() => {
+        cart = [];
+        updateCart();
+        closeCart();
+    }, 2000);
+}
 
 /* ===================== AVAILABLE SEATS BUTTON (Landing Page) ===================== */
 
@@ -203,7 +313,6 @@ function selectSeat(seat) {
     if (confirmBtn) confirmBtn.disabled = false;
 }
 
-// Confirm seat selection (optional)
 document.getElementById("confirmSeatBtn")?.addEventListener("click", () => {
     if (selectedSeat) {
         alert(`Great! Table ${selectedSeat} is reserved for you!`);
